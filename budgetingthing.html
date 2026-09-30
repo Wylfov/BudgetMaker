@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>budget</title>
+    </head>
+    <body>
+    <header>
+        <h1>Budget</h1>
+        <span id="total">0</span>
+    </header>
+    <main id="main">
+        <form>
+            <input type="text" id="keyInput" placeholder="key">
+            <input type="number" id="priceInput" placeholder="price">
+            <input type="button" id="submitBtn" value="Submit">
+            <input type="button" id="delBtn" value="Delete">
+            <input type="button" id="clearBtn" value="Clear all">
+        </form>
+        <div id="lista"></div>
+
+    </main>
+    </body>
+    <script>
+        const elements = {}
+        const delBtn = document.querySelector("#delBtn");
+        const submitBtn = document.querySelector("#submitBtn");
+        const clearBtn = document.querySelector("#clearBtn");
+        const keyInput = document.querySelector("#keyInput");
+        const priceInput=document.querySelector("#priceInput");
+        const lista = document.querySelector("#lista");
+        const totalDisp = document.querySelector("#total");
+        
+
+
+        clearBtn.addEventListener("click", ()=>{
+            for (const key in elements) {
+                delete elements[key];
+            }
+            reloader(elements,totalDisp);
+        })
+
+        delBtn.addEventListener("click", ()=>{
+            const new_key = keyInput.value;
+            if (new_key in elements){
+                console.log("deleter");
+                delete elements[new_key];
+                reloader(elements,totalDisp);
+            }
+            else {
+                console.log("brak elementu");
+                window.alert("Brak elementu");
+            }
+        })
+        
+        submitBtn.addEventListener("click", ()=>{
+            const new_key = keyInput.value;
+            if (new_key===""){
+                console.log("No key");
+                window.alert("Put in a key");
+                return 1;
+            }
+            const new_price = priceInput.value;
+            elements[new_key] = new_price;
+            reloader(elements,totalDisp)});
+
+        function reloader(elements,totalDisp){
+            let total = 0;
+            lista.replaceChildren();
+            for (const key in elements){
+                const new_elem = document.createElement("div");
+                
+                lista.appendChild(new_elem);
+                new_elem.textContent=key + ": " + elements[key];
+                if (elements[key] !== ""){
+                    total += parseInt(elements[key]);
+                }
+            }
+            totalDisp.textContent = total;
+            console.log(elements);
+        }
+
+
+    </script>
+</html>
